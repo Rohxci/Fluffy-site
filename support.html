@@ -118,10 +118,139 @@
             status.textContent = "Your support request was sent successfully.";
             form.reset();
           } else {
-            status.textContent = "Something went wrong while sending your request.";
+            status.textContent = `Error: ${result.error}${result.details ? " - " + result.details : ""}`;
           }
         } catch (error) {
-          status.textContent = "Something went wrong while sending your request.";
+          status.textContent = `Request failed: ${error}`;
+        }
+      });
+    }
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support - The Fluffy Kingdom</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-logo">The Fluffy Kingdom</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="news.html">News</a>
+      <a href="staff.html">Staff</a>
+      <a href="support.html">Support</a>
+      <a href="ban-appeal.html">Ban Appeal</a>
+      <a href="partnerships.html">Partnerships</a>
+      <a href="info.html">Info</a>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <div class="hero-content" id="supportContent">
+      <h1>Support</h1>
+
+      <p>
+        Need help? Our support system is private and designed to help members in a more organized way.
+      </p>
+
+      <p>
+        To access support, members need to log in with their Discord account.
+      </p>
+
+      <div class="hero-buttons" style="margin-top: 28px;">
+        <a class="btn primary" href="login.html">Login with Discord</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const supportContent = document.getElementById("supportContent");
+    const savedUser = localStorage.getItem("fluffyUser");
+
+    if (savedUser) {
+      const user = JSON.parse(savedUser);
+
+      supportContent.innerHTML = `
+        <h1>Private Support</h1>
+        <p>You are logged in as <strong>${user.username}</strong>.</p>
+
+        <div class="staff-card" style="max-width: 700px; margin: 28px auto 0 auto; text-align: left;">
+          <h2 class="staff-role" style="text-align:center;">Support Request</h2>
+
+          <form id="supportForm">
+            <label style="display:block; margin-bottom:10px;">Subject</label>
+            <input id="subject" type="text" placeholder="Enter a subject"
+              style="width:100%; padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.08); color:white; margin-bottom:18px;">
+
+            <label style="display:block; margin-bottom:10px;">Category</label>
+            <select id="category"
+              style="width:100%; padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.08); color:white; margin-bottom:18px;">
+              <option>General Help</option>
+              <option>Report a Problem</option>
+              <option>Member Support</option>
+              <option>Partnership Help</option>
+              <option>Other</option>
+            </select>
+
+            <label style="display:block; margin-bottom:10px;">Message</label>
+            <textarea id="message" placeholder="Write your request here..."
+              style="width:100%; min-height:160px; padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.08); color:white; margin-bottom:22px;"></textarea>
+
+            <div class="hero-buttons" style="justify-content:center;">
+              <button id="sendBtn" type="submit" class="btn primary">Send Request</button>
+            </div>
+          </form>
+
+          <p id="supportStatus" style="margin-top:18px; text-align:center;"></p>
+        </div>
+      `;
+
+      const form = document.getElementById("supportForm");
+      const status = document.getElementById("supportStatus");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const subject = document.getElementById("subject").value.trim();
+        const category = document.getElementById("category").value;
+        const message = document.getElementById("message").value.trim();
+
+        if (!subject || !message) {
+          status.textContent = "Please fill in the subject and message.";
+          return;
+        }
+
+        status.textContent = "Sending...";
+
+        try {
+          const response = await fetch("/api/send-support", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              username: user.username,
+              userId: user.id,
+              subject,
+              category,
+              message
+            })
+          });
+
+          const result = await response.json();
+
+          if (result.ok) {
+            status.textContent = "Your support request was sent successfully.";
+            form.reset();
+          } else {
+            status.textContent = `Error: ${result.error}${result.details ? " - " + result.details : ""}`;
+          }
+        } catch (error) {
+          status.textContent = `Request failed: ${error}`;
         }
       });
     }
