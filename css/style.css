@@ -1,0 +1,96 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #1e1f22;
+  color: white;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: #111214;
+  border-bottom: 1px solid #2b2d31;
+}
+
+.nav-logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.navbar nav {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.navbar a {
+  color: #d7dce2;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.navbar a:hover {
+  color: white;
+}
+
+.hero {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  background: linear-gradient(180deg, #2b2d31 0%, #1e1f22 100%);
+}
+
+.hero-content {
+  max-width: 800px;
+}
+
+.hero h1 {
+  font-size: 42px;
+  margin-bottom: 16px;
+}
+
+.hero p {
+  font-size: 18px;
+  color: #b5bac1;
+  margin-bottom: 28px;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  padding: 14px 22px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.btn.primary {
+  background: #5865f2;
+  color: white;
+}
+
+.btn.secondary {
+  background: #2b2d31;
+  color: white;
+  border: 1px solid #3f4147;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
