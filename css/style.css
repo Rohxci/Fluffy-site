@@ -88,7 +88,7 @@ body {
 .hero-home::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -8%;
   background:
     radial-gradient(circle at 15% 20%, rgba(255, 196, 230, 0.95), transparent 28%),
     radial-gradient(circle at 85% 18%, rgba(190, 170, 255, 0.75), transparent 30%),
@@ -96,7 +96,8 @@ body {
     radial-gradient(circle at 20% 80%, rgba(170, 220, 255, 0.45), transparent 24%),
     linear-gradient(180deg, #ffeaf5 0%, #f6d8f5 30%, #dccfff 58%, #c9dfff 82%, #f9f2ff 100%);
   filter: saturate(1.02);
-  transform: scale(1.03);
+  transform: scale(1.06);
+  animation: fluffyBackgroundMove 18s ease-in-out infinite alternate;
 }
 
 .hero-overlay {
@@ -297,6 +298,26 @@ body {
 
 .btn:hover {
   opacity: 0.9;
+}
+
+/* ANIMATION */
+
+@keyframes fluffyBackgroundMove {
+  0% {
+    transform: scale(1.06) translate3d(0, 0, 0);
+  }
+  25% {
+    transform: scale(1.08) translate3d(-10px, -6px, 0);
+  }
+  50% {
+    transform: scale(1.07) translate3d(8px, -10px, 0);
+  }
+  75% {
+    transform: scale(1.09) translate3d(-6px, 8px, 0);
+  }
+  100% {
+    transform: scale(1.07) translate3d(10px, 6px, 0);
+  }
 }
 
 /* RESPONSIVE */
