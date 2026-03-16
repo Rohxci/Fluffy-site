@@ -52,13 +52,13 @@
         <div class="staff-card" style="max-width: 700px; margin: 28px auto 0 auto; text-align: left;">
           <h2 class="staff-role" style="text-align:center;">Support Request</h2>
 
-          <form>
+          <form id="supportForm">
             <label style="display:block; margin-bottom:10px;">Subject</label>
-            <input type="text" placeholder="Enter a subject"
+            <input id="subject" type="text" placeholder="Enter a subject"
               style="width:100%; padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.08); color:white; margin-bottom:18px;">
 
             <label style="display:block; margin-bottom:10px;">Category</label>
-            <select
+            <select id="category"
               style="width:100%; padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.08); color:white; margin-bottom:18px;">
               <option>General Help</option>
               <option>Report a Problem</option>
@@ -68,17 +68,62 @@
             </select>
 
             <label style="display:block; margin-bottom:10px;">Message</label>
-            <textarea placeholder="Write your request here..."
+            <textarea id="message" placeholder="Write your request here..."
               style="width:100%; min-height:160px; padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.08); color:white; margin-bottom:22px;"></textarea>
 
             <div class="hero-buttons" style="justify-content:center;">
-              <button type="button" class="btn primary">Send Request</button>
+              <button id="sendBtn" type="submit" class="btn primary">Send Request</button>
             </div>
           </form>
-        </div>
 
-        <p style="margin-top: 24px;">The private sending system will be connected in the next step.</p>
+          <p id="supportStatus" style="margin-top:18px; text-align:center;"></p>
+        </div>
       `;
+
+      const form = document.getElementById("supportForm");
+      const status = document.getElementById("supportStatus");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const subject = document.getElementById("subject").value.trim();
+        const category = document.getElementById("category").value;
+        const message = document.getElementById("message").value.trim();
+
+        if (!subject || !message) {
+          status.textContent = "Please fill in the subject and message.";
+          return;
+        }
+
+        status.textContent = "Sending...";
+
+        try {
+          const response = await fetch("/api/send-support", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              username: user.username,
+              userId: user.id,
+              subject,
+              category,
+              message
+            })
+          });
+
+          const result = await response.json();
+
+          if (result.ok) {
+            status.textContent = "Your support request was sent successfully.";
+            form.reset();
+          } else {
+            status.textContent = "Something went wrong while sending your request.";
+          }
+        } catch (error) {
+          status.textContent = "Something went wrong while sending your request.";
+        }
+      });
     }
   </script>
 </body>
