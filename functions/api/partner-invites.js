@@ -1,0 +1,64 @@
+export async function onRequest() {
+  const partners = [
+    {
+      description: `Welcome to the United Union Community. A friendly and supportive community where people can connect, grow together, discover new interests, join events and enjoy meaningful conversations in a respectful and welcoming environment.`,
+      invite: "https://discord.gg/ZTeWtNdtup"
+    },
+    {
+      description: `Welcome to Gen Imperialis, a not-so-serious gaming club for a Star Wars game on Roblox. The server offers daily events, different paths to choose from and a functional faction in GCAR for members who want to join the Imperialis family.`,
+      invite: "https://discord.gg/H42wV3Ynd"
+    }
+  ];
+
+  const results = await Promise.all(
+    partners.map(async (partner) => {
+      try {
+        const code = partner.invite
+          .replace("https://discord.gg/", "")
+          .replace("https://discord.com/invite/", "")
+          .trim();
+
+        const response = await fetch(
+          `https://discord.com/api/v10/invites/${code}?with_counts=true`
+        );
+
+        if (!response.ok) {
+          return {
+            name: "Unknown Server",
+            icon: "",
+            description: partner.description,
+            invite: partner.invite
+          };
+        }
+
+        const data = await response.json();
+        const guild = data.guild || {};
+
+        const iconUrl =
+          guild.icon && guild.id
+            ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=256`
+            : "";
+
+        return {
+          name: guild.name || "Unknown Server",
+          icon: iconUrl,
+          description: partner.description,
+          invite: partner.invite
+        };
+      } catch {
+        return {
+          name: "Unknown Server",
+          icon: "",
+          description: partner.description,
+          invite: partner.invite
+        };
+      }
+    })
+  );
+
+  return new Response(JSON.stringify(results), {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+}
