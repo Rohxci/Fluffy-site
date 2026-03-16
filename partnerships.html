@@ -20,11 +20,77 @@
     </nav>
   </header>
 
-  <main class="hero">
-    <div class="hero-content">
+  <main class="hero" style="padding-top: 120px; padding-bottom: 80px;">
+    <div class="hero-content" style="max-width: 1100px;">
       <h1>Partnerships</h1>
-      <p>This page will show all partner servers and their invite links.</p>
+
+      <p>
+        Here you can find our current partner servers and learn more about their communities.
+      </p>
+
+      <div id="partnersContainer" class="staff-grid" style="margin-top: 34px;">
+        <div class="staff-card">
+          <h2 class="staff-role">Loading partners...</h2>
+          <p class="staff-members">Please wait a moment.</p>
+        </div>
+      </div>
+
+      <div class="staff-card" style="max-width: 850px; margin: 40px auto 0 auto;">
+        <h2 class="staff-role">Request Partnership</h2>
+        <p class="staff-members" style="margin-bottom: 18px;">
+          Interested in partnering with The Fluffy Kingdom?  
+          Use the support page to send your request and our staff will review it privately.
+        </p>
+
+        <div class="hero-buttons" style="justify-content:center;">
+          <a class="btn primary" href="support.html">Request Partnership</a>
+        </div>
+      </div>
     </div>
   </main>
+
+  <script>
+    async function loadPartners() {
+      const container = document.getElementById("partnersContainer");
+
+      try {
+        const response = await fetch("/api/partner-invites");
+        const partners = await response.json();
+
+        container.innerHTML = "";
+
+        partners.forEach((partner) => {
+          const card = document.createElement("div");
+          card.className = "staff-card";
+          card.style.textAlign = "center";
+
+          card.innerHTML = `
+            ${
+              partner.icon
+                ? `<img src="${partner.icon}" alt="${partner.name} icon"
+                    style="width:96px;height:96px;border-radius:50%;border:3px solid rgba(255,255,255,0.9);margin-bottom:16px;object-fit:cover;">`
+                : ""
+            }
+            <h2 class="staff-role">${partner.name}</h2>
+            <p class="staff-members" style="margin-bottom: 18px;">${partner.description}</p>
+            <div class="hero-buttons" style="justify-content:center;">
+              <a class="btn primary" href="${partner.invite}" target="_blank" rel="noopener noreferrer">Join Server</a>
+            </div>
+          `;
+
+          container.appendChild(card);
+        });
+      } catch (error) {
+        container.innerHTML = `
+          <div class="staff-card">
+            <h2 class="staff-role">Error</h2>
+            <p class="staff-members">Something went wrong while loading partner servers.</p>
+          </div>
+        `;
+      }
+    }
+
+    loadPartners();
+  </script>
 </body>
 </html>
