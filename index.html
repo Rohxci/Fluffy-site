@@ -1,34 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Discord Server</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Fluffy Kingdom</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <header class="navbar">
-    <div class="nav-logo">Server Hub</div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="news.html">News</a>
-      <a href="staff.html">Staff</a>
-      <a href="support.html">Support</a>
-      <a href="ban-appeal.html">Ban Appeal</a>
-      <a href="partnerships.html">Partnerships</a>
-      <a href="login.html">Login</a>
-    </nav>
+  <header class="topbar">
+    <div class="brand-small">The Fluffy Kingdom</div>
+
+    <div class="topbar-buttons">
+      <a class="top-btn top-btn-secondary" href="login.html">Login</a>
+      <a class="top-btn top-btn-primary" href="#">Join</a>
+    </div>
   </header>
 
-  <main class="hero">
-    <div class="hero-content">
-      <h1>Welcome to our Discord Server</h1>
-      <p>News, staff info, support, ban appeal, partnerships and more.</p>
-      <div class="hero-buttons">
-        <a class="btn primary" href="#">Join Server</a>
-        <a class="btn secondary" href="login.html">Login with Discord</a>
-      </div>
+  <section class="hero hero-home">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-inner">
+      <img src="assets/logo.png" alt="Server Logo" class="hero-logo" />
+      <h1 class="hero-title">The Fluffy Kingdom</h1>
+      <p class="hero-subtitle">
+        A soft and colorful community space with news, staff info, support, ban appeal and partnerships.
+      </p>
     </div>
-  </main>
+  </section>
+
+  <section class="category-section">
+    <div class="category-grid">
+      <a href="news.html" class="category-card reveal">
+        <span class="category-title">News</span>
+        <span class="category-text">Updates, announcements and events.</span>
+      </a>
+
+      <a href="staff.html" class="category-card reveal">
+        <span class="category-title">Staff</span>
+        <span class="category-text">Meet the team behind the server.</span>
+      </a>
+
+      <a href="support.html" class="category-card reveal">
+        <span class="category-title">Support</span>
+        <span class="category-text">Help, questions and useful links.</span>
+      </a>
+
+      <a href="ban-appeal.html" class="category-card reveal">
+        <span class="category-title">Ban Appeal</span>
+        <span class="category-text">Appeal form and instructions.</span>
+      </a>
+
+      <a href="partnerships.html" class="category-card reveal">
+        <span class="category-title">Partnerships</span>
+        <span class="category-text">Partner servers and related links.</span>
+      </a>
+
+      <a href="login.html" class="category-card reveal">
+        <span class="category-title">Login</span>
+        <span class="category-text">Access with your Discord account.</span>
+      </a>
+    </div>
+  </section>
+
+  <script src="js/main.js"></script>
 </body>
 </html>
