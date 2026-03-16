@@ -21,10 +21,110 @@
   </header>
 
   <main class="hero">
-    <div class="hero-content">
+    <div class="hero-content" id="banAppealContent">
       <h1>Ban Appeal</h1>
-      <p>If you want to appeal a ban, this page will contain the form and the instructions.</p>
+
+      <p>
+        Ban appeals are reviewed privately by the staff team.
+      </p>
+
+      <p>
+        To submit an appeal, you need to log in with your Discord account first.
+      </p>
+
+      <div class="hero-buttons" style="margin-top: 28px;">
+        <a class="btn primary" href="login.html">Login with Discord</a>
+      </div>
     </div>
   </main>
+
+  <script>
+    const banAppealContent = document.getElementById("banAppealContent");
+    const savedUser = localStorage.getItem("fluffyUser");
+
+    if (savedUser) {
+      const user = JSON.parse(savedUser);
+
+      banAppealContent.innerHTML = `
+        <h1>Ban Appeal</h1>
+        <p>You are logged in as <strong>${user.username}</strong>.</p>
+
+        <div class="staff-card" style="max-width: 760px; margin: 28px auto 0 auto; text-align: left;">
+          <h2 class="staff-role" style="text-align:center;">Appeal Form</h2>
+
+          <form id="banAppealForm">
+            <label style="display:block; margin-bottom:10px;">Discord Username</label>
+            <input id="discordTag" type="text" placeholder="Enter your Discord username"
+              style="width:100%; padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.08); color:white; margin-bottom:18px;">
+
+            <label style="display:block; margin-bottom:10px;">Reason for Ban</label>
+            <textarea id="banReason" placeholder="Explain the reason for your ban"
+              style="width:100%; min-height:120px; padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.08); color:white; margin-bottom:18px;"></textarea>
+
+            <label style="display:block; margin-bottom:10px;">Why should we unban you?</label>
+            <textarea id="unbanReason" placeholder="Explain why your ban should be reconsidered"
+              style="width:100%; min-height:140px; padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.08); color:white; margin-bottom:18px;"></textarea>
+
+            <label style="display:block; margin-bottom:10px;">Additional Notes</label>
+            <textarea id="notes" placeholder="Optional additional details"
+              style="width:100%; min-height:100px; padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.08); color:white; margin-bottom:22px;"></textarea>
+
+            <div class="hero-buttons" style="justify-content:center;">
+              <button id="sendBanAppealBtn" type="submit" class="btn primary">Send Appeal</button>
+            </div>
+          </form>
+
+          <p id="banAppealStatus" style="margin-top:18px; text-align:center;"></p>
+        </div>
+      `;
+
+      const form = document.getElementById("banAppealForm");
+      const status = document.getElementById("banAppealStatus");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const discordTag = document.getElementById("discordTag").value.trim();
+        const banReason = document.getElementById("banReason").value.trim();
+        const unbanReason = document.getElementById("unbanReason").value.trim();
+        const notes = document.getElementById("notes").value.trim();
+
+        if (!discordTag || !banReason || !unbanReason) {
+          status.textContent = "Please fill in all required fields.";
+          return;
+        }
+
+        status.textContent = "Sending...";
+
+        try {
+          const response = await fetch("/api/send-ban-appeal", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              username: user.username,
+              userId: user.id,
+              discordTag,
+              banReason,
+              unbanReason,
+              notes
+            })
+          });
+
+          const result = await response.json();
+
+          if (result.ok) {
+            status.textContent = "Your ban appeal was sent successfully.";
+            form.reset();
+          } else {
+            status.textContent = `Error: ${result.error}${result.details ? " - " + result.details : ""}`;
+          }
+        } catch (error) {
+          status.textContent = `Request failed: ${error}`;
+        }
+      });
+    }
+  </script>
 </body>
 </html>
