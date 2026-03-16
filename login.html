@@ -21,7 +21,7 @@
   </header>
 
   <main class="hero">
-    <div class="hero-content">
+    <div class="hero-content" id="loginContent">
       <h1>Login</h1>
 
       <p>
@@ -29,21 +29,63 @@
       </p>
 
       <p>
-        This includes member support and other features that may require account verification in the future.
-      </p>
-
-      <p>
-        Your login is used to identify your Discord account and provide a more secure and organized experience.
+        This includes member support and other features that may require account verification.
       </p>
 
       <div class="hero-buttons" style="margin-top: 28px;">
-        <a class="btn primary" href="https://discord.com/oauth2/authorize?client_id=1483186621674295306&response_type=code&redirect_uri=https%3A%2F%2Ffluffysite.thefluffykingdomsite.workers.dev%2Flogin.html&scope=identify">Login with Discord</a>
+        <a class="btn primary" href="/api/discord-login">Login with Discord</a>
       </div>
 
       <p style="margin-top: 28px;">
-        The Discord login system is now connected to the authorization page. The full private login handling will be completed in the next step.
+        After logging in, your account will be recognized on this device.
       </p>
     </div>
   </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const loggedIn = params.get("logged_in");
+    const username = params.get("username");
+    const avatar = params.get("avatar");
+    const id = params.get("id");
+    const error = params.get("error");
+
+    const loginContent = document.getElementById("loginContent");
+
+    if (loggedIn === "1" && username) {
+      localStorage.setItem(
+        "fluffyUser",
+        JSON.stringify({
+          id,
+          username,
+          avatar
+        })
+      );
+
+      loginContent.innerHTML = `
+        <h1>Login successful</h1>
+        <div class="staff-card" style="max-width: 420px; margin: 28px auto 0 auto;">
+          ${avatar ? `<img src="${avatar}" alt="Avatar" style="width:88px;height:88px;border-radius:50%;border:3px solid rgba(255,255,255,0.9);margin-bottom:16px;">` : ""}
+          <h2 class="staff-role" style="margin-bottom: 8px;">${username}</h2>
+          <p class="staff-members">Your Discord account is now connected on this device.</p>
+          <div class="hero-buttons" style="margin-top: 22px;">
+            <a class="btn primary" href="support.html">Go to Support</a>
+          </div>
+        </div>
+      `;
+
+      window.history.replaceState({}, document.title, "/login.html");
+    }
+
+    if (error) {
+      loginContent.innerHTML = `
+        <h1>Login error</h1>
+        <p>Something went wrong during Discord login.</p>
+        <div class="hero-buttons" style="margin-top: 28px;">
+          <a class="btn primary" href="/api/discord-login">Try again</a>
+        </div>
+      `;
+    }
+  </script>
 </body>
 </html>
