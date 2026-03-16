@@ -21,7 +21,7 @@
   </header>
 
   <main class="hero">
-    <div class="hero-content">
+    <div class="hero-content" id="supportContent">
       <h1>Support</h1>
 
       <p>
@@ -29,22 +29,57 @@
       </p>
 
       <p>
-        To access support, members need to log in with their Discord account. After logging in,
-        they will be able to send a private support request directly to the staff team.
-      </p>
-
-      <p>
-        This system is meant for questions, help requests, server-related issues and other member support needs.
+        To access support, members need to log in with their Discord account.
       </p>
 
       <div class="hero-buttons" style="margin-top: 28px;">
-        <a class="btn primary" href="https://discord.com/oauth2/authorize?client_id=1483186621674295306&response_type=code&redirect_uri=https%3A%2F%2Ffluffysite.thefluffykingdomsite.workers.dev%2Flogin.html&scope=identify">Login with Discord</a>
+        <a class="btn primary" href="/api/discord-login">Login with Discord</a>
       </div>
-
-      <p style="margin-top: 28px;">
-        Once the login system is fully connected, a private support form will appear here.
-      </p>
     </div>
   </main>
+
+  <script>
+    const supportContent = document.getElementById("supportContent");
+    const savedUser = localStorage.getItem("fluffyUser");
+
+    if (savedUser) {
+      const user = JSON.parse(savedUser);
+
+      supportContent.innerHTML = `
+        <h1>Private Support</h1>
+        <p>You are logged in as <strong>${user.username}</strong>.</p>
+
+        <div class="staff-card" style="max-width: 700px; margin: 28px auto 0 auto; text-align: left;">
+          <h2 class="staff-role" style="text-align:center;">Support Request</h2>
+
+          <form>
+            <label style="display:block; margin-bottom:10px;">Subject</label>
+            <input type="text" placeholder="Enter a subject"
+              style="width:100%; padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.08); color:white; margin-bottom:18px;">
+
+            <label style="display:block; margin-bottom:10px;">Category</label>
+            <select
+              style="width:100%; padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.08); color:white; margin-bottom:18px;">
+              <option>General Help</option>
+              <option>Report a Problem</option>
+              <option>Member Support</option>
+              <option>Partnership Help</option>
+              <option>Other</option>
+            </select>
+
+            <label style="display:block; margin-bottom:10px;">Message</label>
+            <textarea placeholder="Write your request here..."
+              style="width:100%; min-height:160px; padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.08); color:white; margin-bottom:22px;"></textarea>
+
+            <div class="hero-buttons" style="justify-content:center;">
+              <button type="button" class="btn primary">Send Request</button>
+            </div>
+          </form>
+        </div>
+
+        <p style="margin-top: 24px;">The private sending system will be connected in the next step.</p>
+      `;
+    }
+  </script>
 </body>
 </html>
