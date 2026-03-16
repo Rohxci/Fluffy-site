@@ -4,13 +4,26 @@ export async function onRequestPost(context) {
     const { username, userId, subject, category, message } = body;
 
     if (!username || !subject || !category || !message) {
-      return new Response(JSON.stringify({ ok: false, error: "missing_fields" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" }
-      });
+      return new Response(
+        JSON.stringify({ ok: false, error: "missing_fields" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" }
+        }
+      );
     }
 
     const webhookUrl = context.env.SUPPORT_WEBHOOK_URL;
+
+    if (!webhookUrl) {
+      return new Response(
+        JSON.stringify({ ok: false, error: "missing_webhook_secret" }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json" }
+        }
+      );
+    }
 
     const content =
       `**New Support Request**\n` +
@@ -30,10 +43,20 @@ export async function onRequestPost(context) {
     });
 
     if (!discordResponse.ok) {
-      return new Response(JSON.stringify({ ok: false, error: "discord_failed" }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" }
-      });
+      const discordText = await discordResponse.text();
+
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          error: "discord_failed",
+          status: discordResponse.status,
+          details: discordText
+        }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json" }
+        }
+      );
     }
 
     return new Response(JSON.stringify({ ok: true }), {
@@ -41,9 +64,16 @@ export async function onRequestPost(context) {
       headers: { "Content-Type": "application/json" }
     });
   } catch (error) {
-    return new Response(JSON.stringify({ ok: false, error: "server_error" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" }
-    });
+    return new Response(
+      JSON.stringify({
+        ok: false,
+        error: "server_error",
+        details: String(error)
+      }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" }
+      }
+    );
   }
 }
