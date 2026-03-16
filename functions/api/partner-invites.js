@@ -19,12 +19,17 @@ export async function onRequest() {
           .trim();
 
         const response = await fetch(
-          `https://discord.com/api/v10/invites/${code}?with_counts=true`
+          `https://discord.com/api/v10/invites/${encodeURIComponent(code)}?with_counts=true&with_expiration=true`,
+          {
+            headers: {
+              "User-Agent": "TheFluffyKingdomSite/1.0"
+            }
+          }
         );
 
         if (!response.ok) {
           return {
-            name: "Unknown Server",
+            name: code === "ZTeWtNdtup" ? "United Union Community" : code === "H42wV3Ynd" ? "Gen Imperialis" : "Unknown Server",
             icon: "",
             description: partner.description,
             invite: partner.invite
@@ -40,14 +45,19 @@ export async function onRequest() {
             : "";
 
         return {
-          name: guild.name || "Unknown Server",
+          name: guild.name || (code === "ZTeWtNdtup" ? "United Union Community" : code === "H42wV3Ynd" ? "Gen Imperialis" : "Unknown Server"),
           icon: iconUrl,
           description: partner.description,
           invite: partner.invite
         };
       } catch {
+        const code = partner.invite
+          .replace("https://discord.gg/", "")
+          .replace("https://discord.com/invite/", "")
+          .trim();
+
         return {
-          name: "Unknown Server",
+          name: code === "ZTeWtNdtup" ? "United Union Community" : code === "H42wV3Ynd" ? "Gen Imperialis" : "Unknown Server",
           icon: "",
           description: partner.description,
           invite: partner.invite
