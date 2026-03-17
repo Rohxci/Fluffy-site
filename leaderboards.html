@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboards - The Fluffy Kingdom</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-logo">The Fluffy Kingdom</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="news.html">News</a>
+      <a href="staff.html">Staff</a>
+      <a href="support.html">Support</a>
+      <a href="ban-appeal.html">Ban Appeal</a>
+      <a href="partnerships.html">Partnerships</a>
+      <a href="info.html">Info</a>
+      <a href="leaderboards.html">Leaderboards</a>
+    </nav>
+  </header>
+
+  <main class="hero" style="padding-top: 120px; padding-bottom: 80px;">
+    <div class="hero-content" style="max-width: 950px;">
+      <h1>Leaderboards</h1>
+      <p>Check the top 10 members for levels, reputation and economy.</p>
+
+      <div class="hero-buttons" style="margin-top: 28px; justify-content: center;">
+        <button class="btn secondary leaderboard-switch active-board" data-type="levels">Levels</button>
+        <button class="btn secondary leaderboard-switch" data-type="reputation">Reputation</button>
+        <button class="btn secondary leaderboard-switch" data-type="economy">Economy</button>
+      </div>
+
+      <div class="staff-card" style="max-width: 900px; margin: 30px auto 0 auto; text-align: left;">
+        <h2 class="staff-role" id="leaderboardTitle" style="text-align:center;">Top 10 Levels</h2>
+
+        <div style="overflow-x:auto;">
+          <table id="leaderboardTable" style="width:100%; border-collapse: collapse; margin-top: 18px;">
+            <thead>
+              <tr>
+                <th style="text-align:left; padding:12px;">#</th>
+                <th style="text-align:left; padding:12px;">User</th>
+                <th style="text-align:left; padding:12px;" id="valueHeader">Amount</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardBody">
+              <tr>
+                <td colspan="3" style="padding:16px;">Loading...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p id="leaderboardStatus" style="margin-top:18px; text-align:center;"></p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const buttons = document.querySelectorAll(".leaderboard-switch");
+    const title = document.getElementById("leaderboardTitle");
+    const body = document.getElementById("leaderboardBody");
+    const valueHeader = document.getElementById("valueHeader");
+    const status = document.getElementById("leaderboardStatus");
+
+    async function loadLeaderboard(type) {
+      body.innerHTML = `<tr><td colspan="3" style="padding:16px;">Loading...</td></tr>`;
+      status.textContent = "";
+
+      try {
+        const response = await fetch(`/api/leaderboards?type=${encodeURIComponent(type)}`);
+        const result = await response.json();
+
+        if (!result.ok) {
+          body.innerHTML = `<tr><td colspan="3" style="padding:16px;">Error loading leaderboard.</td></tr>`;
+          status.textContent = `Error: ${result.error}${result.details ? " - " + result.details : ""}`;
+          return;
+        }
+
+        title.textContent = `Top 10 ${result.type.charAt(0).toUpperCase() + result.type.slice(1)}`;
+        valueHeader.textContent = result.label;
+
+        if (!result.rows.length) {
+          body.innerHTML = `<tr><td colspan="3" style="padding:16px;">No data found.</td></tr>`;
+          return;
+        }
+
+        body.innerHTML = result.rows.map(row => `
+          <tr>
+            <td style="padding:12px;">${row.position}</td>
+            <td style="padding:12px;">${row.username}</td>
+            <td style="padding:12px;">${row.value}</td>
+          </tr>
+        `).join("");
+      } catch (error) {
+        body.innerHTML = `<tr><td colspan="3" style="padding:16px;">Request failed.</td></tr>`;
+        status.textContent = `Request failed: ${error}`;
+      }
+    }
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        buttons.forEach(btn => btn.classList.remove("active-board"));
+        button.classList.add("active-board");
+        loadLeaderboard(button.dataset.type);
+      });
+    });
+
+    loadLeaderboard("levels");
+  </script>
+</body>
+</html>
