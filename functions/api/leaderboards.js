@@ -1,9 +1,6 @@
-import { Pool } from "pg";
+import pg from "pg";
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || globalThis.DATABASE_URL
-});
-
+const { Pool } = pg;
 const GUILD_ID = "1477760575575687182";
 
 async function getUsername(userId, botToken) {
@@ -67,7 +64,7 @@ export async function onRequest(context) {
     if (type === "levels") {
       label = "Level";
       query = `
-        SELECT user_id, level AS value
+        SELECT user_id, level AS value, xp
         FROM users
         WHERE guild_id = $1
         ORDER BY level DESC, xp DESC
@@ -101,9 +98,13 @@ export async function onRequest(context) {
       );
     }
 
-    const client = new Pool({ connectionString: databaseUrl });
-    const result = await client.query(query, [GUILD_ID]);
-    await client.end();
+    const pool = new Pool({
+      connectionString: databaseUrl,
+      ssl: { rejectUnauthorized: false }
+    });
+
+    const result = await pool.query(query, [GUILD_ID]);
+    await pool.end();
 
     const rows = await Promise.all(
       result.rows.map(async (row, index) => {
