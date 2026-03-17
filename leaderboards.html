@@ -58,6 +58,8 @@
   </main>
 
   <script>
+    const CORE_API_BASE = "https://core-production-7b06.up.railway.app";
+
     const buttons = document.querySelectorAll(".leaderboard-switch");
     const title = document.getElementById("leaderboardTitle");
     const body = document.getElementById("leaderboardBody");
@@ -69,7 +71,7 @@
       status.textContent = "";
 
       try {
-        const response = await fetch(`/api/leaderboards?type=${encodeURIComponent(type)}`);
+        const response = await fetch(`${CORE_API_BASE}/api/leaderboards?type=${encodeURIComponent(type)}`);
         const result = await response.json();
 
         if (!result.ok) {
