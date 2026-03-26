@@ -3,10 +3,6 @@ export async function onRequest() {
     {
       description: `Welcome to the United Union Community. A friendly and supportive community where people can connect, grow together, discover new interests, join events and enjoy meaningful conversations in a respectful and welcoming environment.`,
       invite: "https://discord.gg/ZTeWtNdtup"
-    },
-    {
-      description: `Welcome to Gen Imperialis, a not-so-serious gaming club for a Star Wars game on Roblox. The server offers daily events, different paths to choose from and a functional faction in GCAR for members who want to join the Imperialis family.`,
-      invite: "https://discord.gg/H42wV3Ynd"
     }
   ];
 
@@ -29,7 +25,7 @@ export async function onRequest() {
 
         if (!response.ok) {
           return {
-            name: code === "ZTeWtNdtup" ? "United Union Community" : code === "H42wV3Ynd" ? "Gen Imperialis" : "Unknown Server",
+            name: code === "ZTeWtNdtup" ? "United Union Community" : "Unknown Server",
             icon: "",
             description: partner.description,
             invite: partner.invite
@@ -45,7 +41,7 @@ export async function onRequest() {
             : "";
 
         return {
-          name: guild.name || (code === "ZTeWtNdtup" ? "United Union Community" : code === "H42wV3Ynd" ? "Gen Imperialis" : "Unknown Server"),
+          name: guild.name || (code === "ZTeWtNdtup" ? "United Union Community" : "Unknown Server"),
           icon: iconUrl,
           description: partner.description,
           invite: partner.invite
@@ -57,7 +53,7 @@ export async function onRequest() {
           .trim();
 
         return {
-          name: code === "ZTeWtNdtup" ? "United Union Community" : code === "H42wV3Ynd" ? "Gen Imperialis" : "Unknown Server",
+          name: code === "ZTeWtNdtup" ? "United Union Community" : "Unknown Server",
           icon: "",
           description: partner.description,
           invite: partner.invite
