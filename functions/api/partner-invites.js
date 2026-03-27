@@ -7,7 +7,7 @@ export async function onRequest() {
     },
     {
       name: "Femboy Social",
-      description: `A welcoming community for femboys and allies to connect, chat, and share interests. Includes media, art, roleplay, voice chat, and a structured support system. Moderated environment with optional 18+ sections.`,
+      description: `A welcoming community for femboys and allies to connect, chat, and share interests. Includes media, art, roleplay, voice chat, and a structured support system. Moderated environment with optional 18+ sections (SFW).`,
       invite: "https://discord.gg/HcD98hsdRc"
     }
   ];
