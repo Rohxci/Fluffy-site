@@ -17,8 +17,13 @@ export async function onRequest() {
     },
     {
       name: "Imperialis Bloodline",
-      description: `A casual gaming group focused on a Star Wars Roblox experience. Offers events, multiple paths to join, and an organized faction environment.`,
+      description: `A casual gaming group focused on a Star Wars Roblox experience. Offers events, multiple paths, and an organized faction environment.`,
       invite: "https://discord.gg/K3nUssbTt"
+    },
+    {
+      name: "Rip_akainu's Community",
+      description: `A relaxed community server linked to a YouTube channel, where members can chat, see previews of upcoming content, and engage with projects and updates.`,
+      invite: "https://discord.gg/WCF9FhhAeA"
     }
   ];
 
