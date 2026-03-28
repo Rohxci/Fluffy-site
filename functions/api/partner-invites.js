@@ -16,7 +16,7 @@ export async function onRequest() {
       invite: "https://discord.gg/jJDNSGChQr"
     },
     {
-      name: "Gen Imperialis",
+      name: "Imperialis Bloodline",
       description: `A casual gaming group focused on a Star Wars Roblox experience. Offers events, multiple paths to join, and an organized faction environment.`,
       invite: "https://discord.gg/K3nUssbTt"
     }
