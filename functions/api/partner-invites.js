@@ -2,13 +2,18 @@ export async function onRequest() {
   const partners = [
     {
       name: "United Union Community",
-      description: `A friendly and supportive community where people can connect, grow together, discover new interests, join events and enjoy meaningful conversations in a respectful and welcoming environment.`,
+      description: `A friendly and supportive community where people can connect, grow, discover new interests, and enjoy meaningful conversations in a respectful environment.`,
       invite: "https://discord.gg/ZTeWtNdtup"
     },
     {
       name: "Femboy Social",
-      description: `A welcoming community for femboys and allies to connect, chat, and share interests. Includes media, art, roleplay, voice chat, and a structured support system. Moderated environment with optional 18+ sections (SFW).`,
+      description: `A welcoming community for femboys and allies to connect, chat, and share interests. Includes media, art, roleplay, voice chat, and a moderated environment with optional 18+ sections.`,
       invite: "https://discord.gg/HcD98hsdRc"
+    },
+    {
+      name: "The Cozy Furs Lounge",
+      description: `A cozy and friendly furry community focused on fun, chats, events, and games. Offers custom roles, giveaways, and an active, moderated environment.`,
+      invite: "https://discord.gg/jJDNSGChQr"
     }
   ];
 
