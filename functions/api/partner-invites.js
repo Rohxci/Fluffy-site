@@ -12,8 +12,13 @@ export async function onRequest() {
     },
     {
       name: "The Cozy Furs Lounge",
-      description: `A cozy and friendly furry community focused on fun, chats, events, and games. Offers custom roles, giveaways, and an active, moderated environment.`,
+      description: `A cozy and friendly furry community focused on chats, events, games, and giveaways, with custom roles and active moderation.`,
       invite: "https://discord.gg/jJDNSGChQr"
+    },
+    {
+      name: "Gen Imperialis",
+      description: `A casual gaming group focused on a Star Wars Roblox experience. Offers events, multiple paths to join, and an organized faction environment.`,
+      invite: "https://discord.gg/K3nUssbTt"
     }
   ];
 
