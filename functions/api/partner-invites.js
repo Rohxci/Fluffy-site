@@ -6,11 +6,6 @@ export async function onRequest() {
       invite: "https://discord.gg/ZTeWtNdtup"
     },
     {
-      name: "Femboy Social",
-      description: `A welcoming community for femboys and allies to connect, chat, and share interests. Includes media, art, roleplay, voice chat, and a moderated environment with optional 18+ sections.`,
-      invite: "https://discord.gg/HcD98hsdRc"
-    },
-    {
       name: "The Cozy Furs Lounge",
       description: `A cozy and friendly furry community focused on chats, events, games, and giveaways, with custom roles and active moderation.`,
       invite: "https://discord.gg/jJDNSGChQr"
